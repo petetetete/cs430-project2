@@ -51,7 +51,7 @@ int getNextString(char *output, FILE *file) {
 
 
 /* Detailed JavaDocs-style function comment in header file */
-int readPPM(PPMImage *output, FILE *file) {
+int readPPM(ppm_t *output, FILE *file) {
 
   int errorStatus;
 
@@ -93,7 +93,7 @@ int readPPM(PPMImage *output, FILE *file) {
     return MALFORMED_HEADER;
   }
 
-  // Save strings into PPMImage object
+  // Save strings into ppm_t object
   output->width = atoi(width);
   output->height = atoi(height);
   output->maxColorValue = atoi(maxColorValue);
@@ -106,11 +106,11 @@ int readPPM(PPMImage *output, FILE *file) {
   }
 
   // Allocate memory for pixel array on object
-  output->pixels = malloc(sizeof(Pixel)*output->width*output->height);
+  output->pixels = malloc(sizeof(pixel_t)*output->width*output->height);
 
   // If the magic number is P6, read the binary straight into the array
   if (strcmp(magicNumber, "P6") == 0) {
-    fread(output->pixels, sizeof(Pixel), output->width*output->height, file);
+    fread(output->pixels, sizeof(pixel_t), output->width*output->height, file);
   }
   else {
     for (int i = 0; i < output->width*output->height; i++) {
@@ -131,7 +131,7 @@ int readPPM(PPMImage *output, FILE *file) {
 
 
 /* Detailed JavaDocs-style function comment in header file */
-int writePPM(PPMImage *image, FILE *file, int newFormat) {
+int writePPM(ppm_t *image, FILE *file, int newFormat) {
 
   // Populate header
   fprintf(file, "P%d\n", newFormat);
@@ -187,7 +187,7 @@ int main(int argc, char *argv[]) {
   }
 
   // Read PPM into the input structure
-  PPMImage *input = malloc(sizeof(PPMImage));
+  ppm_t *input = malloc(sizeof(ppm_t));
   errorStatus = readPPM(input, inputFH);
   fclose(inputFH);
 

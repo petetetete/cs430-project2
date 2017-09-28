@@ -4,6 +4,7 @@
 // Include standard libraries
 #include <stdlib.h>
 #include <stdio.h>
+#include "ppmrw.h"
 
 // Define constants
 #define OBJECT_KIND_CAMERA 1
@@ -11,29 +12,29 @@
 #define OBJECT_KIND_PLANE 3
 
 // Define types to be used in c file
-typedef struct Object Object;
-typedef struct Camera Camera;
-typedef struct Sphere Sphere;
-typedef struct Plane Plane;
+typedef struct object_t object_t;
+typedef struct camera_t camera_t;
+typedef struct sphere_t sphere_t;
+typedef struct plane_t plane_t;
 
-struct Object {
+struct object_t {
   int kind;
 };
 
-struct Camera {
+struct camera_t {
   struct Object;
   double width;
   double height;
 };
 
-struct Sphere {
+struct sphere_t {
   struct Object;
   double color[3];
   double position[3];
   double radius;
 };
 
-struct Plane {
+struct plane_t {
   struct Object;
   double color[3];
   double position[3];

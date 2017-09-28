@@ -1,4 +1,4 @@
-// Include ppmrw header file
+// Include header file
 #include "ppmrw.h"
 
 
@@ -155,7 +155,7 @@ int writePPM(PPMImage *image, FILE *file, int newFormat) {
   return 0;
 }
 
-
+/*
 int main(int argc, char *argv[]) {
 
   // Check for the appropriate number of parameters
@@ -209,3 +209,4 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
+*/

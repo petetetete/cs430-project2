@@ -1,8 +1,11 @@
-all: raycast.o ppmrw.o
-	gcc raycast.o ppmrw.o -o raycast
+all: raycast.o ppmrw.o vector.o
+	gcc raycast.o ppmrw.o vector.o -o raycast
 
 raycast.o: raycast.c raycast.h
 	gcc -c raycast.c
+
+vector.o: vector.c vector.h
+	gcc -c vector.c
 
 ppmrw.o: ppmrw.c ppmrw.h
 	gcc -c ppmrw.c

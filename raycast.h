@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "ppmrw.h"
+#include "vector.h"
 
 // Define constants
 #define OBJECT_KIND_CAMERA 1

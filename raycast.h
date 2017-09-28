@@ -22,20 +22,20 @@ struct object_t {
 };
 
 struct camera_t {
-  struct Object;
+  struct object_t;
   double width;
   double height;
 };
 
 struct sphere_t {
-  struct Object;
+  struct object_t;
   double color[3];
   double position[3];
   double radius;
 };
 
 struct plane_t {
-  struct Object;
+  struct object_t;
   double color[3];
   double position[3];
   double normal[3];

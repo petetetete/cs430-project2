@@ -140,7 +140,7 @@ int writePPM(ppm_t *image, FILE *file, int newFormat) {
 
   // Print out the pixel data
   if (newFormat == 6) {
-    fwrite(image->pixels, sizeof(Pixel), image->width*image->height, file);
+    fwrite(image->pixels, sizeof(pixel_t), image->width*image->height, file);
   }
   else {
     for (int i = 0; i < image->width*image->height; i++) {

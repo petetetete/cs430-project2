@@ -3,7 +3,20 @@
 
 int parseInput(object_t *scene, FILE *file) {
 
-  printf("here\n");
+  char line[MAX_LINE_LENGTH];
+
+  while (fgets(line, MAX_LINE_LENGTH, file)) {
+
+    printf("%s", line);
+
+    char* token = strtok(line, "c");
+    while (token) {
+
+      printf("%s\n", token);
+
+      token = strtok(0, ",");
+    }
+  }
 
   return 0;
 }

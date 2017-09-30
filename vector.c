@@ -28,3 +28,11 @@ static inline void vector3_cross(vector3_t c, vector3_t a, vector3_t b) {
   c[1] = a[2]*b[0] - a[0]*b[2];
   c[2] = a[0]*b[1] - a[1]*b[0];
 }
+
+vector3_t vector3_create(double a, double b, double c) {
+  vector3_t output = malloc(sizeof(double) * 3);
+  output[0] = a;
+  output[1] = b;
+  output[2] = c;
+  return output;
+}

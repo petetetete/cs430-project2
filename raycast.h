@@ -19,4 +19,8 @@ Usage: raycast width height input_file output.ppm\n\
   input_file: csv file of scene objects\n\
   output_file: final out PPM file name\n"
 
+
+int renderImage(ppm_t *ppmImage, object_t **scene);
+
+
 #endif  // RAYCAST_H

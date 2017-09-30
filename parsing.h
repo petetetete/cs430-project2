@@ -41,4 +41,7 @@ struct plane_t {
   double normal[3];
 };
 
+
+int parseInput(object_t *scene, FILE *file);
+
 #endif  // PARSING_H

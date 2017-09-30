@@ -8,4 +8,15 @@
 #include "vector.h"
 #include "parsing.h"
 
+// Numeric constants
+#define MAX_SCENE_OBJECTS 128
+
+// String constants
+#define USAGE_MESSAGE "\
+Usage: raycast width height input_file output.ppm\n\
+  width: pixel width of the view plane\n\
+  height: pixel height of the view plane\n\
+  input_file: csv file of scene objects\n\
+  output_file: final out PPM file name\n"
+
 #endif  // RAYCAST_H

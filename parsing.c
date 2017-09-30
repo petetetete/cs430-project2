@@ -1,6 +1,13 @@
 // Include header file
 #include "parsing.h"
 
+int parseInput(object_t *scene, FILE *file) {
+
+  printf("here\n");
+
+  return 0;
+}
+
 /*void asdf(object_t *input) {
 
   sphere_t *sphere = (sphere_t *) input;

@@ -4,15 +4,19 @@
 // Actually creates and initializes the image
 int renderImage(ppm_t *ppmImage, object_t **scene) {
 
-  // Tests
-  /*printf("%d\n", scene[0]->kind);
-  sphere_t *asdf = (sphere_t *) scene[0];
-  printf("%.3f", asdf->radius);*/
-
   // Iterate over every pixel in the would be image
   for (int i = 0; i < ppmImage->width; i++) {
     for (int j = 0; j < ppmImage->height; j++) {
 
+      // Test color
+      vector3_t color = vector3_create(0.2, 0.3, 0.4);
+
+      // TODO: Raycast
+      
+      // Populate pixel with color data
+      ppmImage->pixels[i*ppmImage->height + j].r = (int) (color[0] * 255);
+      ppmImage->pixels[i*ppmImage->height + j].g = (int) (color[1] * 255);
+      ppmImage->pixels[i*ppmImage->height + j].b = (int) (color[2] * 255);
     }
   }
 
@@ -54,7 +58,6 @@ int main(int argc, char *argv[]) {
   sphere->color = vector3_create(0, 0, 0);
   sphere->position = vector3_create(0, 0, -20);
   sphere->radius = 7.0;
-
   scene[0] = (object_t *) sphere;
 
   // Handle input file errors
@@ -63,12 +66,20 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  // TODO: Actually use this
   // Parse input csv into scene object
-  // parseInput(scene, inputFH);
+  parseInput(scene, inputFH);
 
   // Create actual PPM image from scene
   renderImage(ppmImage, scene);
+
+  // Handle open errors on output file
+  if (!(outputFH = fopen(outputFName, "w"))) {
+    fprintf(stderr, "Error: Unable to open '%s' for writing\n", outputFName);
+    return 1;
+  }
+
+  // Write final raycasted product to the designated PPM file
+  writePPM(ppmImage, outputFH, 3);
 
   // Clean up program
   fclose(inputFH);

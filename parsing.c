@@ -3,7 +3,8 @@
 
 int parseInput(object_t *scene, FILE *file) {
 
-  char line[MAX_LINE_LENGTH];
+  // TODO: Implement actual input parsing
+  /*char line[MAX_LINE_LENGTH];
 
   while (fgets(line, MAX_LINE_LENGTH, file)) {
 
@@ -16,7 +17,7 @@ int parseInput(object_t *scene, FILE *file) {
 
       token = strtok(0, ",");
     }
-  }
+  }*/
 
   return 0;
 }

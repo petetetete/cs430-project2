@@ -19,7 +19,7 @@ typedef struct pixel_t pixel_t;
 typedef struct ppm_t ppm_t;
 
 struct pixel_t {
-  unsigned char r, g, b, a;
+  unsigned char r, g, b;
 };
 
 struct ppm_t {

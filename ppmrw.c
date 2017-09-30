@@ -122,7 +122,6 @@ int readPPM(ppm_t *output, FILE *file) {
       output->pixels[i].r = atoi(red);
       output->pixels[i].g = atoi(green);
       output->pixels[i].b = atoi(blue);
-      output->pixels[i].a = atoi(alpha);
     }
   }
 
@@ -144,11 +143,10 @@ int writePPM(ppm_t *image, FILE *file, int newFormat) {
   }
   else {
     for (int i = 0; i < image->width*image->height; i++) {
-      fprintf(file, "%d %d %d %d\n",
+      fprintf(file, "%d %d %d  \n",
         image->pixels[i].r,
         image->pixels[i].g,
-        image->pixels[i].b,
-        image->pixels[i].a);
+        image->pixels[i].b);
     }
   }
 

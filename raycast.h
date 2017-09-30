@@ -20,7 +20,10 @@ Usage: raycast width height input_file output.ppm\n\
   output_file: final out PPM file name\n"
 
 
-int renderImage(ppm_t *ppmImage, object_t **scene);
+
+vector3_t raycast(object_t **scene, int numObjects);
+
+int renderImage(ppm_t *ppmImage, object_t **scene, int numObjects);
 
 
 #endif  // RAYCAST_H

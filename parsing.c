@@ -1,7 +1,10 @@
 // Include header file
 #include "parsing.h"
 
-int parseInput(object_t *scene, FILE *file) {
+// < 0 == error, but > 0 the return value is the number of objects
+int parseInput(object_t **scene, FILE *file) {
+
+  int numObjects = 1;
 
   // TODO: Implement actual input parsing
   /*char line[MAX_LINE_LENGTH];
@@ -19,7 +22,7 @@ int parseInput(object_t *scene, FILE *file) {
     }
   }*/
 
-  return 0;
+  return numObjects;
 }
 
 /*void asdf(object_t *input) {

@@ -1,18 +1,25 @@
 // Include header file
 #include "raycast.h"
 
+vector3_t raycast(object_t **scene, int numObjects) {
+
+  // Test
+  vector3_t color = vector3_create(0.6, 0.3, 0.4);
+
+  // TODO: Determine accurate color
+
+  return color;
+}
+
 // Actually creates and initializes the image
-int renderImage(ppm_t *ppmImage, object_t **scene) {
+int renderImage(ppm_t *ppmImage, object_t **scene, int numObjects) {
 
   // Iterate over every pixel in the would be image
   for (int i = 0; i < ppmImage->width; i++) {
     for (int j = 0; j < ppmImage->height; j++) {
 
-      // Test color
-      vector3_t color = vector3_create(0.2, 0.3, 0.4);
+      vector3_t color = raycast(scene, numObjects);
 
-      // TODO: Raycast
-      
       // Populate pixel with color data
       ppmImage->pixels[i*ppmImage->height + j].r = (int) (color[0] * 255);
       ppmImage->pixels[i*ppmImage->height + j].g = (int) (color[1] * 255);
@@ -20,6 +27,7 @@ int renderImage(ppm_t *ppmImage, object_t **scene) {
     }
   }
 
+  // No errors!
   return 0;
 }
 
@@ -37,12 +45,16 @@ int main(int argc, char *argv[]) {
   char *inputFName = argv[3];
   char *outputFName = argv[4];
 
-  // TODO: Validate actual input
+  if (viewWidth <= 0 || viewHeight <= 0) {
+    fprintf(stderr, "Error: Invalid width or height, must be > 0\n");
+    return 1;
+  }
 
   // Initialize variables to be used in program
   FILE *inputFH;
   FILE *outputFH;
   object_t **scene = malloc(sizeof(object_t) * MAX_SCENE_OBJECTS);
+  int numObjects;
 
   // Create final ppmImage
   ppm_t *ppmImage = malloc(sizeof(ppm_t));
@@ -67,10 +79,16 @@ int main(int argc, char *argv[]) {
   }
 
   // Parse input csv into scene object
-  parseInput(scene, inputFH);
+  numObjects = parseInput(scene, inputFH);
+
+  // Handle errors found in parseInput
+  if (numObjects < 0) {
+    fprintf(stderr, "Error: Malformed input CSV\n", outputFName);
+    return 1;
+  }
 
   // Create actual PPM image from scene
-  renderImage(ppmImage, scene);
+  renderImage(ppmImage, scene, numObjects);
 
   // Handle open errors on output file
   if (!(outputFH = fopen(outputFName, "w"))) {
@@ -84,4 +102,5 @@ int main(int argc, char *argv[]) {
   // Clean up program
   fclose(inputFH);
 
+  return 0;
 }

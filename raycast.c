@@ -21,8 +21,10 @@ double sphereIntersection(vector3_t direction, sphere_t* sphere) {
   double discr = b*b - 4*a*c;
 
   // TODO: Figure out what's up with the discriminant here
+  //       Changing the width and height of the image also shifts the
+  //       circle, smaller numbers place the circle in the bottom right corner
   printf("direction vector: %.3f %.3f %.3f\n", direction[0], direction[1], direction[2]);
-  printf("object position: %.3f %.3f %.3f\n", position[0], position[1], position[2]);
+  printf("object position: %.3f %.3f %.3f (radius) %.3f\n", position[0], position[1], position[2], sphere->radius);
   printf("a: %.3f, b: %.3f, c: %.3f\n", a, b, c);
   printf("discriminant: %.3f\n\n", discr);
 
@@ -34,7 +36,7 @@ double sphereIntersection(vector3_t direction, sphere_t* sphere) {
     double t1 = (-b + sqrt(discr)) / (2*a);
     double t2 = (-b - sqrt(discr)) / (2*a);
 
-    printf("t1: %.3f,  t2: %.3f\n", t1, t2);
+    /*printf("t1: %.3f,  t2: %.3f\n", t1, t2);*/
     if (t1 < t2) {
       return t1;
     }
@@ -94,6 +96,7 @@ int renderImage(ppm_t *ppmImage, object_t **scene, int numObjects) {
   for (int i = 0; i < ppmImage->width; i++) {
     for (int j = 0; j < ppmImage->height; j++) {
 
+      printf("%d %d\n\n", ppmImage->width, ppmImage->height);
       vector3_t direction = vector3_createUnit(
         -VIEW_PLANE_WIDTH/2 + (VIEW_PLANE_WIDTH/ppmImage->width) * (i + 0.5),
         VIEW_PLANE_HEIGHT/2 - (VIEW_PLANE_HEIGHT/ppmImage->height) * (j + 0.5),
@@ -149,9 +152,13 @@ int main(int argc, char *argv[]) {
   sphere_t *sphere = malloc(sizeof(sphere_t));
   sphere->kind = OBJECT_KIND_SPHERE;
   sphere->color = vector3_create(0.1, 0.5, 0.2);
-  sphere->position = vector3_create(0, 0, -50);
-  sphere->radius = 20;
+  sphere->position = vector3_create(0, 0, -51);
+  sphere->radius = 50;
   scene[0] = (object_t *) sphere;
+
+  // TODO: This breaks when the z position is "greater" than the radius
+  /*sphere->position = vector3_create(0, 0, -51);
+  sphere->radius = 50;*/
 
   // Handle input file errors
   if (!(inputFH = fopen(inputFName, "r"))) {

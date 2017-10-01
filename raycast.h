@@ -9,11 +9,14 @@
 #include "vector.h"
 #include "parsing.h"
 
+// Error code constants
+#define NO_INTERSECTION_FOUND -2
+
 // Numeric constants
 #define MAX_SCENE_OBJECTS 128
-#define VIEW_PLANE_WIDTH 50 // In world units
-#define VIEW_PLANE_HEIGHT 50 // In world units
-#define FOCAL_LENGTH 1 // In world units
+#define VIEW_PLANE_WIDTH 100 // In world units
+#define VIEW_PLANE_HEIGHT 100 // In world units
+#define FOCAL_LENGTH 10.0 // In world units
 
 // String constants
 #define USAGE_MESSAGE "\
@@ -22,7 +25,6 @@ Usage: raycast width height input_file output.ppm\n\
   height: pixel height of the view plane\n\
   input_file: csv file of scene objects\n\
   output_file: final out PPM file name\n"
-
 
 
 double sphereIntersection(vector3_t direction, sphere_t* sphere);

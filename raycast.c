@@ -3,9 +3,45 @@
 
 double sphereIntersection(vector3_t direction, sphere_t* sphere) {
 
-  // TODO
+  vector3_t position = sphere->position;
 
-  return 0;
+  double a = direction[0]*direction[0] +
+             direction[1]*direction[1] +
+             direction[2]*direction[2];
+
+  double b = -2*(position[0]*direction[0] +
+                 position[1]*direction[1] +
+                 position[2]*direction[2]);
+
+  double c = position[0]*position[0] +
+             position[1]*position[1] +
+             position[2]*position[2] -
+             sphere->radius*sphere->radius;
+
+  double discr = b*b - 4*a*c;
+
+  // TODO: Figure out what's up with the discriminant here
+  printf("direction vector: %.3f %.3f %.3f\n", direction[0], direction[1], direction[2]);
+  printf("object position: %.3f %.3f %.3f\n", position[0], position[1], position[2]);
+  printf("a: %.3f, b: %.3f, c: %.3f\n", a, b, c);
+  printf("discriminant: %.3f\n\n", discr);
+
+  if (discr < 0) {
+    return NO_INTERSECTION_FOUND;
+  }
+  else {
+    // TODO: Check if both of these are necessary
+    double t1 = (-b + sqrt(discr)) / (2*a);
+    double t2 = (-b - sqrt(discr)) / (2*a);
+
+    printf("t1: %.3f,  t2: %.3f\n", t1, t2);
+    if (t1 < t2) {
+      return t1;
+    }
+    else {
+      return t2;
+    }
+  }
 }
 
 double planeIntersection(vector3_t direction, plane_t* plane) {
@@ -41,8 +77,8 @@ vector3_t raycast(object_t **scene, vector3_t direction, int numObjects) {
       t = planeIntersection(direction, plane);
     }
 
-    // If the current t was closer than all before, save the object
-    if (t < closestT) {
+    // If the current t was closer than all before, save the color
+    if (t != NO_INTERSECTION_FOUND && t < closestT) {
       closestT = t;
       closestColor = color;
     }
@@ -60,7 +96,7 @@ int renderImage(ppm_t *ppmImage, object_t **scene, int numObjects) {
 
       vector3_t direction = vector3_createUnit(
         -VIEW_PLANE_WIDTH/2 + (VIEW_PLANE_WIDTH/ppmImage->width) * (i + 0.5),
-        VIEW_PLANE_HEIGHT/2 + (VIEW_PLANE_HEIGHT/ppmImage->height) * (j + 0.5),
+        VIEW_PLANE_HEIGHT/2 - (VIEW_PLANE_HEIGHT/ppmImage->height) * (j + 0.5),
         -FOCAL_LENGTH);
 
       vector3_t color = raycast(scene, direction, numObjects);
@@ -113,8 +149,8 @@ int main(int argc, char *argv[]) {
   sphere_t *sphere = malloc(sizeof(sphere_t));
   sphere->kind = OBJECT_KIND_SPHERE;
   sphere->color = vector3_create(0.1, 0.5, 0.2);
-  sphere->position = vector3_create(0, 0, -20);
-  sphere->radius = 7.0;
+  sphere->position = vector3_create(0, 0, -50);
+  sphere->radius = 20;
   scene[0] = (object_t *) sphere;
 
   // Handle input file errors

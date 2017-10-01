@@ -11,6 +11,9 @@
 
 // Numeric constants
 #define MAX_SCENE_OBJECTS 128
+#define VIEW_PLANE_WIDTH 50 // In world units
+#define VIEW_PLANE_HEIGHT 50 // In world units
+#define FOCAL_LENGTH 1 // In world units
 
 // String constants
 #define USAGE_MESSAGE "\
@@ -22,11 +25,11 @@ Usage: raycast width height input_file output.ppm\n\
 
 
 
-double sphereIntersection(vector3_t directionRay, sphere_t* sphere);
+double sphereIntersection(vector3_t direction, sphere_t* sphere);
 
-double planeIntersection(vector3_t directionRay, plane_t* plane);
+double planeIntersection(vector3_t direction, plane_t* plane);
 
-vector3_t raycast(object_t **scene, int numObjects);
+vector3_t raycast(object_t **scene, vector3_t direction, int numObjects);
 
 int renderImage(ppm_t *ppmImage, object_t **scene, int numObjects);
 

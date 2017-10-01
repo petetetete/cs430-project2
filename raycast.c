@@ -1,25 +1,21 @@
 // Include header file
 #include "raycast.h"
 
-double sphereIntersection(vector3_t directionRay, sphere_t* sphere) {
+double sphereIntersection(vector3_t direction, sphere_t* sphere) {
 
   // TODO
 
   return 0;
 }
 
-double planeIntersection(vector3_t directionRay, plane_t* plane) {
+double planeIntersection(vector3_t direction, plane_t* plane) {
 
   // TODO
 
   return 0;
 }
 
-vector3_t raycast(object_t **scene, int numObjects) {
-
-  // TODO: Determine the actual direction ray and pass it in
-  // Test direction vector
-  vector3_t directionRay = vector3_create(1.0, 0, 1.0);
+vector3_t raycast(object_t **scene, vector3_t direction, int numObjects) {
 
   // Track closet object
   vector3_t closestColor = vector3_create(0, 0, 0); // Default to black
@@ -37,12 +33,12 @@ vector3_t raycast(object_t **scene, int numObjects) {
     if (object->kind == OBJECT_KIND_SPHERE) {
       sphere_t *sphere = (sphere_t *) object; // Convert to sphere
       color = sphere->color;
-      t = sphereIntersection(directionRay, sphere);
+      t = sphereIntersection(direction, sphere);
     }
     else if (object->kind == OBJECT_KIND_PLANE) {
       plane_t *plane = (plane_t *) object; // Convert to plane
       color = plane->color;
-      t = planeIntersection(directionRay, plane);
+      t = planeIntersection(direction, plane);
     }
 
     // If the current t was closer than all before, save the object
@@ -62,7 +58,12 @@ int renderImage(ppm_t *ppmImage, object_t **scene, int numObjects) {
   for (int i = 0; i < ppmImage->width; i++) {
     for (int j = 0; j < ppmImage->height; j++) {
 
-      vector3_t color = raycast(scene, numObjects);
+      vector3_t direction = vector3_createUnit(
+        -VIEW_PLANE_WIDTH/2 + (VIEW_PLANE_WIDTH/ppmImage->width) * (i + 0.5),
+        VIEW_PLANE_HEIGHT/2 + (VIEW_PLANE_HEIGHT/ppmImage->height) * (j + 0.5),
+        -FOCAL_LENGTH);
+
+      vector3_t color = raycast(scene, direction, numObjects);
 
       // Populate pixel with color data
       ppmImage->pixels[i*ppmImage->height + j].r = (int) (color[0] * 255);

@@ -36,3 +36,12 @@ vector3_t vector3_create(double a, double b, double c) {
   output[2] = c;
   return output;
 }
+
+vector3_t vector3_createUnit(double a, double b, double c) {
+  vector3_t output = malloc(sizeof(double) * 3);
+  double magnitude = sqrt(a*a + b*b + c*c);
+  output[0] = a/magnitude;
+  output[1] = b/magnitude;
+  output[2] = c/magnitude;
+  return output;
+}

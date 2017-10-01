@@ -1,14 +1,58 @@
 // Include header file
 #include "raycast.h"
 
+double sphereIntersection(vector3_t directionRay, sphere_t* sphere) {
+
+  // TODO
+
+  return 0;
+}
+
+double planeIntersection(vector3_t directionRay, plane_t* plane) {
+
+  // TODO
+
+  return 0;
+}
+
 vector3_t raycast(object_t **scene, int numObjects) {
 
-  // Test
-  vector3_t color = vector3_create(0.6, 0.3, 0.4);
+  // TODO: Determine the actual direction ray and pass it in
+  // Test direction vector
+  vector3_t directionRay = vector3_create(1.0, 0, 1.0);
 
-  // TODO: Determine accurate color
+  // Track closet object
+  vector3_t closestColor = vector3_create(0, 0, 0); // Default to black
+  double closestT = INFINITY;
 
-  return color;
+  // Iterate through all objects to find nearest color
+  for (int i = 0; i < numObjects; i++) {
+
+    // Current object and t value
+    object_t *object = scene[i];
+    vector3_t color;
+    double t;
+
+    // Determine which intersection type to check for
+    if (object->kind == OBJECT_KIND_SPHERE) {
+      sphere_t *sphere = (sphere_t *) object; // Convert to sphere
+      color = sphere->color;
+      t = sphereIntersection(directionRay, sphere);
+    }
+    else if (object->kind == OBJECT_KIND_PLANE) {
+      plane_t *plane = (plane_t *) object; // Convert to plane
+      color = plane->color;
+      t = planeIntersection(directionRay, plane);
+    }
+
+    // If the current t was closer than all before, save the object
+    if (t < closestT) {
+      closestT = t;
+      closestColor = color;
+    }
+  }
+
+  return closestColor;
 }
 
 // Actually creates and initializes the image
@@ -67,7 +111,7 @@ int main(int argc, char *argv[]) {
   // Create test scene
   sphere_t *sphere = malloc(sizeof(sphere_t));
   sphere->kind = OBJECT_KIND_SPHERE;
-  sphere->color = vector3_create(0, 0, 0);
+  sphere->color = vector3_create(0.1, 0.5, 0.2);
   sphere->position = vector3_create(0, 0, -20);
   sphere->radius = 7.0;
   scene[0] = (object_t *) sphere;

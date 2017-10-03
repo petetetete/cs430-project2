@@ -32,25 +32,37 @@ double sphereIntersection(vector3_t direction, sphere_t* sphere) {
     return NO_INTERSECTION_FOUND;
   }
   else {
-    // TODO: Check if both of these are necessary
     double t1 = (-b + sqrt(discr)) / (2*a);
     double t2 = (-b - sqrt(discr)) / (2*a);
 
     /*printf("t1: %.3f,  t2: %.3f\n", t1, t2);*/
-    if (t1 < t2) {
-      return t1;
-    }
-    else {
+    if (t2 > 0) {
       return t2;
     }
+    else if (t1 > 0) {
+      return t1;
+    }
+    else return NO_INTERSECTION_FOUND;
   }
 }
 
 double planeIntersection(vector3_t direction, plane_t* plane) {
 
-  // TODO
+  // No intersections if the vector is parallel to the plane
+  double product = vector3_dot(direction, plane->normal);
+  if (product == 0) {
+    return NO_INTERSECTION_FOUND;
+  }
 
-  return 0;
+  // Calculate the t scalar of intersection
+  vector3_t subVector;
+  vector3_sub(subVector, plane->position, direction);
+  double t = vector3_dot(subVector, plane->normal) / product;
+
+  if (t > 0) {
+    return t;
+  }
+  else return NO_INTERSECTION_FOUND;
 }
 
 vector3_t raycast(object_t **scene, vector3_t direction, int numObjects) {
@@ -96,7 +108,7 @@ int renderImage(ppm_t *ppmImage, object_t **scene, int numObjects) {
   for (int i = 0; i < ppmImage->width; i++) {
     for (int j = 0; j < ppmImage->height; j++) {
 
-      printf("%d %d\n\n", ppmImage->width, ppmImage->height);
+      printf("test: %.10f\n\n", (double) (VIEW_PLANE_WIDTH/ppmImage->width));
       vector3_t direction = vector3_createUnit(
         -VIEW_PLANE_WIDTH/2 + (VIEW_PLANE_WIDTH/ppmImage->width) * (i + 0.5),
         VIEW_PLANE_HEIGHT/2 - (VIEW_PLANE_HEIGHT/ppmImage->height) * (j + 0.5),
@@ -146,19 +158,6 @@ int main(int argc, char *argv[]) {
   ppmImage->height = viewHeight;
   ppmImage->maxColorValue = 255;
   ppmImage->pixels = malloc(sizeof(pixel_t)*ppmImage->width*ppmImage->height);
-
-  // TODO: Remove this when CSV parsing is set up
-  // Create test scene
-  sphere_t *sphere = malloc(sizeof(sphere_t));
-  sphere->kind = OBJECT_KIND_SPHERE;
-  sphere->color = vector3_create(0.1, 0.5, 0.2);
-  sphere->position = vector3_create(0, 0, -51);
-  sphere->radius = 50;
-  scene[0] = (object_t *) sphere;
-
-  // TODO: This breaks when the z position is "greater" than the radius
-  /*sphere->position = vector3_create(0, 0, -51);
-  sphere->radius = 50;*/
 
   // Handle input file errors
   if (!(inputFH = fopen(inputFName, "r"))) {

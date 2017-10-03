@@ -4,7 +4,32 @@
 // < 0 == error, but > 0 the return value is the number of objects
 int parseInput(object_t **scene, FILE *file) {
 
-  int numObjects = 1;
+  int numObjects;
+
+  // TODO: Remove this when CSV parsing is set up
+  // Create test scene
+  // This breaks when the z position is "greater" than the radius
+  /*sphere->position = vector3_create(0, 0, -51);
+  sphere->radius = 50;*/
+
+  // Test Sphere
+  sphere_t *sphere = malloc(sizeof(sphere_t));
+  sphere->kind = OBJECT_KIND_SPHERE;
+  sphere->color = vector3_create(0.1, 0.5, 0.2);
+  sphere->position = vector3_create(0, 0, -51);
+  sphere->radius = 50;
+  scene[0] = (object_t *) sphere;
+
+  // Test Plane
+  /*plane_t *plane = malloc(sizeof(plane_t));
+  plane->kind = OBJECT_KIND_PLANE;
+  plane->color = vector3_create(0.1, 0.5, 0.2);
+  plane->position = vector3_create(0, 0, -50);
+  plane->normal = vector3_create(0, 0, 1);
+  scene[0] = (object_t *) plane;*/
+
+  numObjects = 1;
+
 
   // TODO: Implement actual input parsing
   /*char line[MAX_LINE_LENGTH];
@@ -24,34 +49,3 @@ int parseInput(object_t **scene, FILE *file) {
 
   return numObjects;
 }
-
-/*void asdf(object_t *input) {
-
-  sphere_t *sphere = (sphere_t *) input;
-  printf("%d\n", sphere->kind);
-  printf("%.2f\n", sphere->radius);
-}*/
-
-/*int main(int argc, char *argv[]) {
-
-  object_t *test = malloc(sizeof(object_t));
-  sphere_t *sphere = malloc(sizeof(sphere_t));
-
-  test->kind = OBJECT_KIND_CAMERA;
-  sphere->kind = OBJECT_KIND_SPHERE;
-  sphere->radius = 6.5;
-
-  object_t *scene = malloc(sizeof(object_t) * 10);
-
-  scene[0] = *test;
-  scene[1] = *(object_t*) sphere;
-
-  object_t *convert = (object_t *) sphere;
-  sphere_t *sphere2 = (sphere_t *) convert;
-  object_t *back = (object_t *) sphere2;
-
-  asdf(back);
-
-  return 0;
-}
-*/

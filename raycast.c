@@ -23,10 +23,12 @@ double sphereIntersection(vector3_t direction, sphere_t* sphere) {
   // TODO: Figure out what's up with the discriminant here
   //       Changing the width and height of the image also shifts the
   //       circle, smaller numbers place the circle in the bottom right corner
-  printf("direction vector: %.3f %.3f %.3f\n", direction[0], direction[1], direction[2]);
-  printf("object position: %.3f %.3f %.3f (radius) %.3f\n", position[0], position[1], position[2], sphere->radius);
-  printf("a: %.3f, b: %.3f, c: %.3f\n", a, b, c);
-  printf("discriminant: %.3f\n\n", discr);
+  /*printf("direction vector: %.5f %.5f %.5f\n", direction[0], direction[1], direction[2]);
+  printf("object position: %.5f %.5f %.5f (radius) %.3f\n", position[0], position[1], position[2], sphere->radius);
+  printf("a: %.5f, b: %.5f, c: %.5f\n", a, b, c);
+  printf("discriminant: %.5f\n\n", discr);*/
+
+  // TODO: Sphere stretches on x or y adjustment
 
   if (discr < 0) {
     return NO_INTERSECTION_FOUND;
@@ -35,7 +37,7 @@ double sphereIntersection(vector3_t direction, sphere_t* sphere) {
     double t1 = (-b + sqrt(discr)) / (2*a);
     double t2 = (-b - sqrt(discr)) / (2*a);
 
-    /*printf("t1: %.3f,  t2: %.3f\n", t1, t2);*/
+    /*printf("t1: %.3f,  t2: %.3f\n\n", t1, t2);*/
     if (t2 > 0) {
       return t2;
     }
@@ -46,6 +48,7 @@ double sphereIntersection(vector3_t direction, sphere_t* sphere) {
   }
 }
 
+
 double planeIntersection(vector3_t direction, plane_t* plane) {
 
   // No intersections if the vector is parallel to the plane
@@ -53,9 +56,9 @@ double planeIntersection(vector3_t direction, plane_t* plane) {
   if (product == 0) {
     return NO_INTERSECTION_FOUND;
   }
-
+  
   // Calculate the t scalar of intersection
-  vector3_t subVector;
+  vector3_t subVector = vector3_create(0, 0, 0);;
   vector3_sub(subVector, plane->position, direction);
   double t = vector3_dot(subVector, plane->normal) / product;
 
@@ -64,6 +67,7 @@ double planeIntersection(vector3_t direction, plane_t* plane) {
   }
   else return NO_INTERSECTION_FOUND;
 }
+
 
 vector3_t raycast(object_t **scene, vector3_t direction, int numObjects) {
 
@@ -101,31 +105,37 @@ vector3_t raycast(object_t **scene, vector3_t direction, int numObjects) {
   return closestColor;
 }
 
+
 // Actually creates and initializes the image
 int renderImage(ppm_t *ppmImage, object_t **scene, int numObjects) {
 
   // Iterate over every pixel in the would be image
-  for (int i = 0; i < ppmImage->width; i++) {
-    for (int j = 0; j < ppmImage->height; j++) {
+  double pixHeight = (VIEW_PLANE_HEIGHT/ppmImage->height);
+  double pixWidth = (VIEW_PLANE_WIDTH/ppmImage->width);
 
-      printf("test: %.10f\n\n", (double) (VIEW_PLANE_WIDTH/ppmImage->width));
-      vector3_t direction = vector3_createUnit(
-        -VIEW_PLANE_WIDTH/2 + (VIEW_PLANE_WIDTH/ppmImage->width) * (i + 0.5),
-        VIEW_PLANE_HEIGHT/2 - (VIEW_PLANE_HEIGHT/ppmImage->height) * (j + 0.5),
-        -FOCAL_LENGTH);
+  for (int i = 0; i < ppmImage->height; i++) {
+    double yCoord = VIEW_PLANE_HEIGHT/2 - pixHeight * (i + 0.5);
 
+    for (int j = 0; j < ppmImage->width; j++) {
+      double xCoord = -VIEW_PLANE_WIDTH/2 + pixWidth * (j + 0.5);
+
+      // Create direction vector
+      vector3_t direction = vector3_createUnit(xCoord, yCoord, -FOCAL_LENGTH);
+
+      // Get color from raycast
       vector3_t color = raycast(scene, direction, numObjects);
 
       // Populate pixel with color data
-      ppmImage->pixels[i*ppmImage->height + j].r = (int) (color[0] * 255);
-      ppmImage->pixels[i*ppmImage->height + j].g = (int) (color[1] * 255);
-      ppmImage->pixels[i*ppmImage->height + j].b = (int) (color[2] * 255);
+      ppmImage->pixels[i*ppmImage->width + j].r = (int) (color[0] * 255);
+      ppmImage->pixels[i*ppmImage->width + j].g = (int) (color[1] * 255);
+      ppmImage->pixels[i*ppmImage->width + j].b = (int) (color[2] * 255);
     }
   }
 
   // No errors!
   return 0;
 }
+
 
 int main(int argc, char *argv[]) {
 

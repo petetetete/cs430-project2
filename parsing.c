@@ -16,8 +16,8 @@ int parseInput(object_t **scene, FILE *file) {
   sphere_t *sphere = malloc(sizeof(sphere_t));
   sphere->kind = OBJECT_KIND_SPHERE;
   sphere->color = vector3_create(0.1, 0.5, 0.2);
-  sphere->position = vector3_create(0, 0, -51);
-  sphere->radius = 50;
+  sphere->position = vector3_create(2.0, 2.0, -50.1);
+  sphere->radius = 50.05;
   scene[0] = (object_t *) sphere;
 
   // Test Plane
@@ -25,7 +25,7 @@ int parseInput(object_t **scene, FILE *file) {
   plane->kind = OBJECT_KIND_PLANE;
   plane->color = vector3_create(0.1, 0.5, 0.2);
   plane->position = vector3_create(0, 0, -50);
-  plane->normal = vector3_create(0, 0, 1);
+  plane->normal = vector3_create(1, 0.2, 0.1);
   scene[0] = (object_t *) plane;*/
 
   numObjects = 1;

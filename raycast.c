@@ -5,20 +5,20 @@ double sphereIntersection(vector3_t direction, sphere_t* sphere) {
 
   vector3_t position = sphere->position;
 
-  double a = direction[0]*direction[0] +
-             direction[1]*direction[1] +
-             direction[2]*direction[2];
+  double a = pow(direction[0], 2) +
+             pow(direction[1], 2) +
+             pow(direction[2], 2);
 
   double b = -2*(position[0]*direction[0] +
                  position[1]*direction[1] +
                  position[2]*direction[2]);
 
-  double c = position[0]*position[0] +
-             position[1]*position[1] +
-             position[2]*position[2] -
-             sphere->radius*sphere->radius;
+  double c = pow(position[0], 2) +
+             pow(position[1], 2) +
+             pow(position[2], 2) -
+             pow(sphere->radius, 2);
 
-  double discr = b*b - 4*a*c;
+  double discr = pow(b, 2) - 4*a*c;
 
   // TODO: Figure out what's up with the discriminant here
   //       Changing the width and height of the image also shifts the
@@ -34,17 +34,17 @@ double sphereIntersection(vector3_t direction, sphere_t* sphere) {
     return NO_INTERSECTION_FOUND;
   }
   else {
-    double t1 = (-b + sqrt(discr)) / (2*a);
-    double t2 = (-b - sqrt(discr)) / (2*a);
+    double t1 = (-b - sqrt(discr)) / (2*a);
+    if (t1 > 0) {
+      return t1;
+    }
 
-    /*printf("t1: %.3f,  t2: %.3f\n\n", t1, t2);*/
+    double t2 = (-b + sqrt(discr)) / (2*a);
     if (t2 > 0) {
       return t2;
     }
-    else if (t1 > 0) {
-      return t1;
-    }
-    else return NO_INTERSECTION_FOUND;
+
+    return NO_INTERSECTION_FOUND;
   }
 }
 
@@ -63,6 +63,7 @@ double planeIntersection(vector3_t direction, plane_t* plane) {
   double t = vector3_dot(subVector, plane->normal) / product;
 
   if (t > 0) {
+    printf("plane t: %.5f\n", t);
     return t;
   }
   else return NO_INTERSECTION_FOUND;
@@ -93,6 +94,10 @@ vector3_t raycast(object_t **scene, vector3_t direction, int numObjects) {
       plane_t *plane = (plane_t *) object; // Convert to plane
       color = plane->color;
       t = planeIntersection(direction, plane);
+    }
+
+    if (closestT != INFINITY) {
+      printf("t: %.5f, closestT: %.5f\n", t, closestT);
     }
 
     // If the current t was closer than all before, save the color

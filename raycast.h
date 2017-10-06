@@ -14,8 +14,6 @@
 
 // Numeric constants
 #define MAX_SCENE_OBJECTS 128
-#define VIEW_PLANE_WIDTH 100.0 // In world units
-#define VIEW_PLANE_HEIGHT 100.0 // In world units
 #define FOCAL_LENGTH 1.0 // In world units
 
 // String constants
@@ -33,7 +31,8 @@ double planeIntersection(vector3_t direction, plane_t* plane);
 
 vector3_t raycast(object_t **scene, vector3_t direction, int numObjects);
 
-int renderImage(ppm_t *ppmImage, object_t **scene, int numObjects);
+int renderImage(ppm_t *ppmImage, camera_t *camera,
+                object_t **scene, int numObjects);
 
 
 #endif  // RAYCAST_H

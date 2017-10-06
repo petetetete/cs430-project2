@@ -46,6 +46,6 @@ struct plane_t {
 };
 
 
-int parseInput(object_t **scene, FILE *file);
+int parseInput(camera_t *camera, object_t **scene, FILE *file);
 
 #endif  // PARSING_H

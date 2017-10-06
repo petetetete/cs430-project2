@@ -63,7 +63,6 @@ double planeIntersection(vector3_t direction, plane_t* plane) {
   double t = vector3_dot(subVector, plane->normal) / product;
 
   if (t > 0) {
-    printf("plane t: %.5f\n", t);
     return t;
   }
   else return NO_INTERSECTION_FOUND;
@@ -96,10 +95,6 @@ vector3_t raycast(object_t **scene, vector3_t direction, int numObjects) {
       t = planeIntersection(direction, plane);
     }
 
-    if (closestT != INFINITY) {
-      printf("t: %.5f, closestT: %.5f\n", t, closestT);
-    }
-
     // If the current t was closer than all before, save the color
     if (t != NO_INTERSECTION_FOUND && t < closestT) {
       closestT = t;
@@ -112,17 +107,18 @@ vector3_t raycast(object_t **scene, vector3_t direction, int numObjects) {
 
 
 // Actually creates and initializes the image
-int renderImage(ppm_t *ppmImage, object_t **scene, int numObjects) {
+int renderImage(ppm_t *ppmImage, camera_t *camera,
+                object_t **scene, int numObjects) {
 
   // Iterate over every pixel in the would be image
-  double pixHeight = (VIEW_PLANE_HEIGHT/ppmImage->height);
-  double pixWidth = (VIEW_PLANE_WIDTH/ppmImage->width);
+  double pixHeight = camera->height/ppmImage->height;
+  double pixWidth = camera->width/ppmImage->width;
 
   for (int i = 0; i < ppmImage->height; i++) {
-    double yCoord = VIEW_PLANE_HEIGHT/2 - pixHeight * (i + 0.5);
+    double yCoord = camera->height/2 - pixHeight * (i + 0.5);
 
     for (int j = 0; j < ppmImage->width; j++) {
-      double xCoord = -VIEW_PLANE_WIDTH/2 + pixWidth * (j + 0.5);
+      double xCoord = -camera->width/2 + pixWidth * (j + 0.5);
 
       // Create direction vector
       vector3_t direction = vector3_createUnit(xCoord, yCoord, -FOCAL_LENGTH);
@@ -164,6 +160,7 @@ int main(int argc, char *argv[]) {
   // Initialize variables to be used in program
   FILE *inputFH;
   FILE *outputFH;
+  camera_t *camera = malloc(sizeof(camera_t));
   object_t **scene = malloc(sizeof(object_t) * MAX_SCENE_OBJECTS);
   int numObjects;
 
@@ -181,7 +178,7 @@ int main(int argc, char *argv[]) {
   }
 
   // Parse input csv into scene object
-  numObjects = parseInput(scene, inputFH);
+  numObjects = parseInput(camera, scene, inputFH);
 
   // Handle errors found in parseInput
   if (numObjects < 0) {
@@ -190,7 +187,7 @@ int main(int argc, char *argv[]) {
   }
 
   // Create actual PPM image from scene
-  renderImage(ppmImage, scene, numObjects);
+  renderImage(ppmImage, camera, scene, numObjects);
 
   // Handle open errors on output file
   if (!(outputFH = fopen(outputFName, "w"))) {

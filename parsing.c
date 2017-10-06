@@ -22,8 +22,6 @@ int parseCamera(camera_t *camera, char *line) {
   sscanf(widthStart + 6, "%lf,", &width);
   sscanf(heightStart + 7, "%lf,", &height);
 
-  printf("Camera - width: %lf, height: %lf\n", width, height);
-
   // Catch invalid values
   if (width == 0 || height == 0) {
     return INVALID_PARSE_LINE;
@@ -62,8 +60,6 @@ int parseSphere(sphere_t *sphere, char *line) {
   sscanf(positionStart + 9, " [%lf , %lf , %lf],",
     &position[0], &position[1], &position[2]);
   sscanf(radiusStart + 7, "%lf,", &radius);
-
-  printf("Sphere - color[0]: %lf, color[1]: %lf, color[2]: %lf\n         position[0]: %lf, position[1]: %lf, position[2]: %lf\n         radius: %lf\n", color[0], color[1], color[2], position[0], position[1], position[2], radius);
 
   // Catch invalid values
   if (color[0] == INFINITY ||
@@ -112,8 +108,6 @@ int parsePlane(plane_t *plane, char *line) {
   sscanf(normalStart + 7, " [%lf , %lf , %lf],",
     &normal[0], &normal[1], &normal[2]);
 
-  printf("Plane - color[0]: %lf, color[1]: %lf, color[2]: %lf\n         position[0]: %lf, position[1]: %lf, position[2]: %lf\n         normal[0]: %lf, normal[1]: %lf, normal[2]: %lf\n", color[0], color[1], color[2], position[0], position[1], position[2], normal[0], normal[1], normal[2]);
-
   // Catch invalid values
   if (color[0] == INFINITY ||
       color[1] == INFINITY ||
@@ -140,23 +134,22 @@ int parsePlane(plane_t *plane, char *line) {
 // < 0 == error, but > 0 the return value is the number of objects
 int parseInput(camera_t *camera, object_t **scene, FILE *file) {
 
+  int errorStatus = 0;
   int numObjects = 0;
   int cameraFound = 1; // Default to false
   char line[MAX_LINE_LENGTH];
 
   while (fgets(line, MAX_LINE_LENGTH, file)) {
 
-    int errorStatus = 0;
-
     // Get object type
     char objectType[20];
-    sscanf(line, "%19[a-zA-Z]", objectType);
+    sscanf(line, " %19[a-zA-Z]", objectType);
 
     // Determine which parse function to use by objectType
     if (strcmp(objectType, "camera") == 0) {
       errorStatus = parseCamera(camera, line);
 
-      // If no error parsing
+      // If no error, reset flag
       if (errorStatus == 0) {
         cameraFound = 0;
       }
@@ -165,7 +158,7 @@ int parseInput(camera_t *camera, object_t **scene, FILE *file) {
       sphere_t *sphere = malloc(sizeof(sphere_t));
       errorStatus = parseSphere(sphere, line);
 
-      // If no error parsing
+      // If no error, save object
       if (errorStatus == 0) {
         scene[numObjects++] = (object_t *) sphere;
       }
@@ -174,15 +167,14 @@ int parseInput(camera_t *camera, object_t **scene, FILE *file) {
       plane_t *plane = malloc(sizeof(plane_t));
       errorStatus = parsePlane(plane, line);
 
-      // If no error parsing
+      // If no error, save object
       if (errorStatus == 0) {
         scene[numObjects++] = (object_t *) plane;
       }
     }
   }
 
-  printf("%d\n\n", numObjects);
-
+  // Ensure that a camera was found
   if (cameraFound != 0) {
     return NO_CAMERA_FOUND;
   }

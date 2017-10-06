@@ -3,14 +3,9 @@
 
 double sphereIntersection(vector3_t direction, sphere_t* sphere) {
 
-  // TODO: Consider improving run time by using unit vector assumption
-
   vector3_t position = sphere->position;
 
-  double a = pow(direction[0], 2) +
-             pow(direction[1], 2) +
-             pow(direction[2], 2);
-
+  // Calculate variables to use in quadratic formula
   double b = -2*(position[0]*direction[0] +
                  position[1]*direction[1] +
                  position[2]*direction[2]);
@@ -20,26 +15,20 @@ double sphereIntersection(vector3_t direction, sphere_t* sphere) {
              pow(position[2], 2) -
              pow(sphere->radius, 2);
 
-  double discr = pow(b, 2) - 4*a*c;
-
-  // TODO: Figure out what's up with the discriminant here
-  //       Changing the width and height of the image also shifts the
-  //       circle, smaller numbers place the circle in the bottom right corner
-  /*printf("direction vector: %.5f %.5f %.5f\n", direction[0], direction[1], direction[2]);
-  printf("object position: %.5f %.5f %.5f (radius) %.3f\n", position[0], position[1], position[2], sphere->radius);
-  printf("a: %.5f, b: %.5f, c: %.5f\n", a, b, c);
-  printf("discriminant: %.5f\n\n", discr);*/
+  double discr = pow(b, 2) - 4*c;
 
   if (discr < 0) {
     return NO_INTERSECTION_FOUND;
   }
   else {
-    double t1 = (-b - sqrt(discr)) / (2*a);
+
+    // Prioritize closest intersection
+    double t1 = (-b - sqrt(discr)) / 2;
     if (t1 > 0) {
       return t1;
     }
 
-    double t2 = (-b + sqrt(discr)) / (2*a);
+    double t2 = (-b + sqrt(discr)) / 2;
     if (t2 > 0) {
       return t2;
     }
@@ -47,7 +36,6 @@ double sphereIntersection(vector3_t direction, sphere_t* sphere) {
     return NO_INTERSECTION_FOUND;
   }
 }
-
 
 double planeIntersection(vector3_t direction, plane_t* plane) {
 
@@ -62,12 +50,12 @@ double planeIntersection(vector3_t direction, plane_t* plane) {
   vector3_sub(subVector, plane->position, direction);
   double t = vector3_dot(subVector, plane->normal) / product;
 
+  // Only return t when it is a positive scalar
   if (t > 0) {
     return t;
   }
   else return NO_INTERSECTION_FOUND;
 }
-
 
 vector3_t raycast(object_t **scene, vector3_t direction, int numObjects) {
 
@@ -105,7 +93,6 @@ vector3_t raycast(object_t **scene, vector3_t direction, int numObjects) {
   return closestColor;
 }
 
-
 // Actually creates and initializes the image
 int renderImage(ppm_t *ppmImage, camera_t *camera,
                 object_t **scene, int numObjects) {
@@ -136,7 +123,6 @@ int renderImage(ppm_t *ppmImage, camera_t *camera,
   // No errors!
   return 0;
 }
-
 
 int main(int argc, char *argv[]) {
 
@@ -179,8 +165,6 @@ int main(int argc, char *argv[]) {
 
   // Parse input csv into scene object
   numObjects = parseInput(camera, scene, inputFH);
-  
-  printf("Camera - height: %lf\n", camera->height);
 
   // Handle errors found in parseInput
   if (numObjects < 0) {

@@ -1,7 +1,6 @@
 // Include header file
 #include "ppmrw.h"
 
-
 /* Detailed JavaDocs-style function comment in header file */
 int getNextString(char *output, FILE *file) {
 
@@ -48,7 +47,6 @@ int getNextString(char *output, FILE *file) {
     return 0;
   }
 }
-
 
 /* Detailed JavaDocs-style function comment in header file */
 int readPPM(ppm_t *output, FILE *file) {
@@ -128,7 +126,6 @@ int readPPM(ppm_t *output, FILE *file) {
   return 0;
 }
 
-
 /* Detailed JavaDocs-style function comment in header file */
 int writePPM(ppm_t *image, FILE *file, int newFormat) {
 
@@ -152,59 +149,3 @@ int writePPM(ppm_t *image, FILE *file, int newFormat) {
 
   return 0;
 }
-
-/*
-int main(int argc, char *argv[]) {
-
-  // Check for the appropriate number of parameters
-  if (argc != 4) {
-    fprintf(stderr, USAGE_MESSAGE);
-    return 1;
-  }
-
-  // Save command line parameters
-  int convertToFormat = atoi(argv[1]);
-  char *inputFName = argv[2];
-  char *outputFName = argv[3];
-
-  // Initialize variables to be used in program
-  FILE *inputFH;
-  FILE *outputFH;
-  int errorStatus;
-
-  // Validate conversion number
-  if (convertToFormat != 3 && convertToFormat != 6) {
-    fprintf(stderr, "Error: Invalid PPM format number, use 3 or 6\n");
-    return 1;
-  }
-
-  // Handle input file errors
-  if (!(inputFH = fopen(inputFName, "r"))) {
-    fprintf(stderr, "Error: Input file '%s' could not be found\n", inputFName);
-    return 1;
-  }
-
-  // Read PPM into the input structure
-  ppm_t *input = malloc(sizeof(ppm_t));
-  errorStatus = readPPM(input, inputFH);
-  fclose(inputFH);
-
-  // Handle reading errors
-  if (errorStatus == MALFORMED_HEADER) {
-    fprintf(stderr, "Error: Malformed input PPM image header\n");
-    return 1;
-  }
-
-  // Handle open errors on output file
-  if (!(outputFH = fopen(outputFName, "w"))) {
-    fprintf(stderr, "Error: Unable to open '%s' for writing\n", outputFName);
-    return 1;
-  }
-
-  // Write out PPM to the output file
-  writePPM(input, outputFH, convertToFormat);
-  fclose(outputFH);
-
-  return 0;
-}
-*/

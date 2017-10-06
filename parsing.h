@@ -12,6 +12,10 @@
 #define OBJECT_KIND_SPHERE 2
 #define OBJECT_KIND_PLANE 3
 
+// Error code constants
+#define INVALID_PARSE_LINE -4
+#define NO_CAMERA_FOUND -5
+
 // Numeric constants
 #define MAX_LINE_LENGTH 256
 
@@ -46,6 +50,13 @@ struct plane_t {
 };
 
 
+int parseCamera(camera_t *camera, char *line);
+
+int parseSphere(sphere_t *sphere, char *line);
+
+int parsePlane(plane_t *plane, char *line);
+
 int parseInput(camera_t *camera, object_t **scene, FILE *file);
+
 
 #endif  // PARSING_H

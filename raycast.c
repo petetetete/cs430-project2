@@ -3,6 +3,8 @@
 
 double sphereIntersection(vector3_t direction, sphere_t* sphere) {
 
+  // TODO: Consider improving run time by using unit vector assumption
+
   vector3_t position = sphere->position;
 
   double a = pow(direction[0], 2) +
@@ -27,8 +29,6 @@ double sphereIntersection(vector3_t direction, sphere_t* sphere) {
   printf("object position: %.5f %.5f %.5f (radius) %.3f\n", position[0], position[1], position[2], sphere->radius);
   printf("a: %.5f, b: %.5f, c: %.5f\n", a, b, c);
   printf("discriminant: %.5f\n\n", discr);*/
-
-  // TODO: Sphere stretches on x or y adjustment
 
   if (discr < 0) {
     return NO_INTERSECTION_FOUND;
@@ -179,6 +179,8 @@ int main(int argc, char *argv[]) {
 
   // Parse input csv into scene object
   numObjects = parseInput(camera, scene, inputFH);
+  
+  printf("Camera - height: %lf\n", camera->height);
 
   // Handle errors found in parseInput
   if (numObjects < 0) {

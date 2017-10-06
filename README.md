@@ -18,10 +18,14 @@ raycast 100 100 objects.csv output.ppm
 The first two numbers represent width and height (respectively). `objects.csv` is a CSV file in which each line represents an object (camera, sphere, plane) and its properties (width, height, color, position, radius, normal). Finally, `output.ppm` is the name of the PPM file to be created.
 
 ## Example
-[TODO]
+![Example Raycast Image](examples/example.png)
+
+[Example CSV](examples/example.csv)
+
+The above example demonstrates **depth**, **multiple spheres**, **multiple planes**, **intersecting planes**, **intersecting spheres**, and **poor CSV spacing**. 
 
 ## Known Issues/Strange Behavior
-[TODO]
+* None so far
 
 ## Author
 Peter Huettl - [ph289@nau.edu](mailto:ph289@nau.edu)

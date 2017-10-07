@@ -18,14 +18,20 @@ raycast 100 100 objects.csv output.ppm
 The first two numbers represent width and height (respectively). `objects.csv` is a CSV file in which each line represents an object (camera, sphere, plane) and its properties (width, height, color, position, radius, normal). Finally, `output.ppm` is the name of the PPM file to be created.
 
 ## Example
-![Example Raycast Image](examples/example.png)
+![Example Image](examples/example.png)
 
-[Example CSV](examples/example.csv)
+[Example CSV](examples/example.csv) - (width: 400px, height: 400px)
 
-The above example demonstrates **depth**, **multiple spheres**, **multiple planes**, **intersecting planes**, **intersecting spheres**, and **poor CSV spacing**. 
+The above example demonstrates **depth**, **multiple spheres**, **multiple planes**, **intersecting planes**, **intersecting spheres**, and **poor CSV spacing**.
+
+![Solar System Image](examples/solar.png)
+
+[Solar System CSV](examples/solar.csv) - (width: 800px, height: 400px)
+
+The above is just an attempt at rendering our solar system.
 
 ## Known Issues/Strange Behavior
-* None so far
+* None (so far)
 
 ## Author
 Peter Huettl - [ph289@nau.edu](mailto:ph289@nau.edu)

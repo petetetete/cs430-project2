@@ -120,8 +120,7 @@ int renderImage(ppm_t *ppmImage, camera_t *camera,
     }
   }
 
-  // No errors!
-  return 0;
+  return 0; // No errors!
 }
 
 int main(int argc, char *argv[]) {

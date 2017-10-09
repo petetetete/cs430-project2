@@ -1,7 +1,6 @@
 // Include header file
 #include "ppmrw.h"
 
-/* Detailed JavaDocs-style function comment in header file */
 int getNextString(char *output, FILE *file) {
 
   output[0] = 0; // Initialize input
@@ -48,7 +47,6 @@ int getNextString(char *output, FILE *file) {
   }
 }
 
-/* Detailed JavaDocs-style function comment in header file */
 int readPPM(ppm_t *output, FILE *file) {
 
   int errorStatus;
@@ -126,7 +124,6 @@ int readPPM(ppm_t *output, FILE *file) {
   return 0;
 }
 
-/* Detailed JavaDocs-style function comment in header file */
 int writePPM(ppm_t *image, FILE *file, int newFormat) {
 
   // Populate header

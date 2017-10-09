@@ -50,13 +50,41 @@ struct plane_t {
 };
 
 
+/**
+ * Helper function used to parse camera properties from string.
+ * 
+ * @param  camera  pointer to output camera
+ * @param  line    string containing camera data to parse
+ * @return         error status of parsing
+ */
 int parseCamera(camera_t *camera, char *line);
 
+/**
+ * Helper function used to parse sphere properties from string.
+ * 
+ * @param  sphere  pointer to output sphere
+ * @param  line    string containing sphere data to parse
+ * @return         error status of parsing
+ */
 int parseSphere(sphere_t *sphere, char *line);
 
+/**
+ * Helper function used to parse plane properties from string.
+ * 
+ * @param  plane  pointer to output plane
+ * @param  line   string containing plane data to parse
+ * @return        error status of parsing
+ */
 int parsePlane(plane_t *plane, char *line);
 
+/**
+ * Parse CSV file in to an object array describing the world scene.
+ * 
+ * @param  camera  pointer to output camera
+ * @param  scene   array of objects describing the world
+ * @param  file    CSV file to parse for object data
+ * @return         error status of parsing
+ */
 int parseInput(camera_t *camera, object_t **scene, FILE *file);
-
 
 #endif  // PARSING_H

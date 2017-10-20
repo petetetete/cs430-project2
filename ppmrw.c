@@ -61,7 +61,6 @@ int readPPM(ppm_t *output, FILE *file) {
   char red[STRING_MAX_BUFFER];
   char green[STRING_MAX_BUFFER];
   char blue[STRING_MAX_BUFFER];
-  char alpha[STRING_MAX_BUFFER];
 
   // Get and check validity of magic number
   errorStatus = getNextString(magicNumber, file);
@@ -113,7 +112,6 @@ int readPPM(ppm_t *output, FILE *file) {
       getNextString(red, file);
       getNextString(green, file);
       getNextString(blue, file);
-      getNextString(alpha, file);
 
       output->pixels[i].r = atoi(red);
       output->pixels[i].g = atoi(green);

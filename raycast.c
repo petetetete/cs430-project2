@@ -181,7 +181,7 @@ int main(int argc, char *argv[]) {
   }
 
   // Write final raycasted product to the designated PPM file
-  writePPM(ppmImage, outputFH, 3);
+  writePPM(ppmImage, outputFH, PPM_OUTPUT_VERSION);
 
   // Clean up program
   fclose(inputFH);
